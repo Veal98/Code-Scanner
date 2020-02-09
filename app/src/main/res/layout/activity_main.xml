@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5px"
+        android:layout_marginBottom="76dp"
+        android:adjustViewBounds="true"
+        android:maxWidth="160px"
+        android:maxHeight="160px"
+        android:src="@drawable/robot"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="254dp"
+        android:layout_height="34dp"
+        android:gravity="center"
+        android:text="二维码/条形码生成和识别系统"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:typeface="sans"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.229" />
+
+    <Button
+        android:id="@+id/create_code"
+        android:layout_width="200dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="66dp"
+        android:background="@drawable/btn_shape1"
+        android:text="生成二维码/条形码"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:typeface="sans"
+        app:layout_constraintBottom_toTopOf="@+id/scan_code"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/scan_2code"
+        android:layout_width="200dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/btn_shape"
+        android:text="扫描二维码"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:typeface="sans"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scan_bar_code" />
+
+    <Button
+        android:id="@+id/scan_bar_code"
+        android:layout_width="200dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/btn_shape"
+        android:text="扫描条形码"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:typeface="sans"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scan_code" />
+
+    <Button
+        android:id="@+id/scan_code"
+        android:layout_width="200dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/btn_shape"
+        android:text="扫描二维码/条形码"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:typeface="sans"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_code" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
