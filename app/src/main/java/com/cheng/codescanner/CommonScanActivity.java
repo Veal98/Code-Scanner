@@ -1,6 +1,7 @@
 package com.cheng.codescanner;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.cheng.codescanner.utils.Constant;
 import com.cheng.codescanner.zxing.ScanListener;
+import com.cheng.codescanner.zxing.ScanManager;
 import com.google.zxing.Result;
 
 import butterknife.Bind;
@@ -29,7 +31,11 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
     @Bind(R.id.tv_scan_result) //扫描结果
     TextView tv_scan_result;
 
-    private int scanMode;//扫描模式（条形，二维码，全部）
+    private int scanMode;  //扫描模式（条形，二维码，全部）
+
+    final int PHOTOREQUESTCODE = 1111;  //读取SD存储卡请求码 ( 用于showPictures() )
+
+    ScanManager scanManager; //用于打开闪光灯
 
     /**
      * 此处监听使用匿名内部类 + ButterKnife
@@ -45,9 +51,35 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.qrcode_g_gallery:  //打开图库
+                showPictures(PHOTOREQUESTCODE);
+                break;
+            case R.id.iv_light:
+                scanManager.switchLight();
+                break;
+            case R.id.qrcode_ic_back: //退出扫码
+                finish();
+                break;
+            case R.id.authorize_return: //左上角返回
+                finish();
+                break;
+            default:
+                break;
 
+        }
     }
 
+    /**
+     * 调用图库，获取本地图片
+     * @param requestMode 读取SD存储卡请求码
+     */
+    public void showPictures(int requestMode){
+        // 原：Intent.ACTION_PICK
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");  //使用setType()进行过滤，选择图片。 intent.setType(“video/;image/”) 同时选择视频和图片
+        startActivityForResult(intent, requestMode);
+    }
     @Override
     public void scanResult(Result rawResult, Bundle bundle) {
 
