@@ -1,8 +1,12 @@
 package com.cheng.codescanner;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -50,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
         scan_2code.setOnClickListener(new ClickListener());
         scan_bar_code.setOnClickListener(new ClickListener());
         scan_code.setOnClickListener(new ClickListener());
+
+
+
     }
 
     // 定义一个内部类，实现View.OnClickListener接口，并重写onClick()方法

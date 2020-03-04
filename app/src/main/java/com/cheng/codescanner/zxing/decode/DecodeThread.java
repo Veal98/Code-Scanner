@@ -31,9 +31,7 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * This thread does shouquan_ic_all the heavy lifting of decoding the images.
- * 
- * @author dswitkin@google.com (Daniel Switkin)
+ * This thread is decoding the images.
  */
 public class DecodeThread extends Thread {
 

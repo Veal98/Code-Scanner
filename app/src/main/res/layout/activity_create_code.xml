@@ -5,20 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/et_code_key"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <Button
+        android:id="@+id/btn_create_code3"
+        android:layout_width="105dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="172dp"
+        android:layout_weight="1"
+        android:background="@drawable/btn_shape1"
         android:gravity="center"
-        android:hint="输入要生成码的内容"
         android:padding="10dp"
+        android:text="生成码"
         android:textSize="17sp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_create_code"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/btn_create_code_and_img"
+        app:layout_constraintHorizontal_bias="0.569"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.785" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_save_2_code"
+        android:layout_width="108dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="248dp"
+        android:layout_weight="1"
+        android:background="@drawable/btn_shape1"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="保存二维码"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toStartOf="@+id/btn_create_code_and_img"
+        app:layout_constraintHorizontal_bias="0.569"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!--    <LinearLayout-->
     <!--        android:layout_width="322dp"-->
@@ -30,6 +47,25 @@
     <!--        tools:layout_editor_absoluteY="458dp">-->
 
     <!--    </LinearLayout>-->
+
+    <EditText
+        android:id="@+id/et_code_key"
+        android:layout_width="296dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center"
+        android:hint="输入要生成码的内容"
+        android:padding="10dp"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_create_code"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.782" />
 
     <Button
         android:id="@+id/btn_create_code"
@@ -57,7 +93,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:padding="10dp"
-        android:text="添加图片"
+        android:text="分享图片"
         android:background="@drawable/btn_shape1"
         android:textSize="17sp"
         app:layout_constraintBottom_toTopOf="@+id/iv_2_code"
@@ -65,14 +101,31 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
+    <Button
+        android:id="@+id/btn_save_bar_code"
+        android:layout_width="107dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="172dp"
+        android:layout_marginEnd="76dp"
+        android:layout_marginRight="76dp"
+        android:layout_weight="1"
+        android:background="@drawable/btn_shape1"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="保存条形码"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toTopOf="@+id/iv_2_code"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.737" />
+
     <ImageView
         android:id="@+id/iv_2_code"
         android:layout_width="229dp"
         android:layout_height="160dp"
-        android:layout_marginTop="264dp"
+        android:layout_marginTop="324dp"
 
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -5,8 +5,7 @@ import android.os.Bundle;
 import com.google.zxing.Result;
 
 /**
- * 二维码结果监听返回
- * @author 刘红亮  2015年4月29日  下午8:08:13
+ * 二维码结果监听返回接口类
  *
  */
 public interface ScanListener {
