@@ -43,6 +43,11 @@ public class DecodeHandler extends Handler {
 	final MultiFormatReader multiFormatReader;
 	boolean running = true;
 
+	/**
+	 * 将线程构造方法中设置的 hints 设置给实例化的 MultiFormatReader ,同时注入 CaptureActivity 的实例。
+	 * @param scanManager
+	 * @param hints
+	 */
 	public DecodeHandler(ScanManager scanManager, Map<DecodeHintType, Object> hints) {
 		multiFormatReader = new MultiFormatReader();
 		multiFormatReader.setHints(hints);

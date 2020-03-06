@@ -100,20 +100,35 @@ public class ScanManager implements SurfaceHolder.Callback{
 		// first launch. That led to bugs where the scanning rectangle was the
 		// wrong size and partially
 		// off screen.
+
+		//控制activity在一段时间无操作自动finish
 		inactivityTimer = new InactivityTimer(activity);
+		//管理扫码后是否有声音和震动
 		beepManager = new BeepManager(activity);
-		cameraManager = new CameraManager(activity.getApplicationContext());
+		cameraManager = new CameraManager(activity.getApplicationContext()); //1
 		
 		handler = null;
 		if (isHasSurface) {
 			// The activity was paused but not stopped, so the surface still
 			// exists. Therefore
 			// surfaceCreated() won't be called, so init the camera here.
-			initCamera(scanPreview.getHolder());
+			initCamera(scanPreview.getHolder()); //2
 		} else {
 			// Install the callback and wait for surfaceCreated() to init the
 			// camera.
-			scanPreview.getHolder().addCallback(this);
+			scanPreview.getHolder().addCallback(this); //3
+//			绑定Surface的监听器，就是在当前的Activity中绑定Surface生命周期的回调方法。
+//			SurfaceHolder.Callback 中定义了三个接口方法：
+//
+//			public void surfaceChanged(SurfaceHolder holder, int format, int width, int height);
+//			当surface发生任何结构性的变化时（格式或者大小），该方法就会被立即调用。
+//
+//			public void surfaceCreated(SurfaceHolder holder);
+//			当surface对象创建后，该方法就会被立即调用。
+//
+//			public void surfaceDestroyed(SurfaceHolder holder);
+//			当surface对象在将要销毁前，该方法会被立即调用。
+
 		}
 		inactivityTimer.onResume();
 	}
@@ -168,17 +183,17 @@ public class ScanManager implements SurfaceHolder.Callback{
 			// RuntimeException.
 			if (handler == null) {
 				handler = new CaptureActivityHandler(this, cameraManager, scanMode);
-				Log.e("hongliang1", "handler new成功！:"+handler);
+				Log.e("smallbeef", "handler new成功！:"+handler);
 			}
 
 			initCrop();
 		} catch (IOException ioe) {
-			Log.e(TAG,"hongliang", ioe);
+			Log.e(TAG,"smallbeef", ioe);
 			//弹出提示，报错
 			ioe.printStackTrace();
 			listener.scanError(new Exception("相机打开出错，请检查是否被禁止了该权限！"));
 		} catch (RuntimeException e) {
-			Log.e(TAG, "hongliang", e);
+			Log.e(TAG, "smallbeef", e);
 			//弹出提示，报错
 			e.printStackTrace();
 			listener.scanError(new Exception("相机打开出错，请检查是否被禁止了该权限！"));

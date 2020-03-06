@@ -1,30 +1,52 @@
 package com.cheng.codescanner;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import com.cheng.codescanner.utils.CommonUtil;
 import com.cheng.codescanner.utils.Constant;
 import com.cheng.codescanner.zxing.ScanListener;
 import com.cheng.codescanner.zxing.ScanManager;
 import com.cheng.codescanner.zxing.decode.DecodeThread;
 import com.cheng.codescanner.zxing.decode.Utils;
+import com.flyco.animation.BounceEnter.BounceTopEnter;
+import com.flyco.animation.SlideExit.SlideBottomExit;
+import com.flyco.dialog.listener.OnBtnClickL;
+import com.flyco.dialog.widget.NormalDialog;
 import com.google.zxing.Result;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import me.leefeng.promptlibrary.PromptDialog;
 
 public final class CommonScanActivity extends Activity implements ScanListener, View.OnClickListener {
 
@@ -45,7 +67,7 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
 
     final int PHOTOREQUESTCODE = 1111;  //读取SD存储卡请求码 ( 用于showPictures() )
 
-    ScanManager scanManager; //用于打开闪光灯
+    ScanManager scanManager; //调用ScanManager实现扫描解码、闪光灯
 
     // View主要适用于主动更新、刷新情况，SurfaceView主要适用于被动更新、刷新情况；
     SurfaceView scanPreview = null;  //整个扫描界面
@@ -72,6 +94,7 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
         ButterKnife.bind(this);
         // 利用getIntExtra() 取出MainActivity中的putExtra()传入的值,设置扫描模式
         scanMode = getIntent().getIntExtra(Constant.REQUEST_SCAN_MODE, Constant.REQUEST_SCAN_MODE_ALL_MODE);
+        checkPermission(); //摄像头权限申请
         initView();
     }
 
@@ -99,7 +122,7 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
     /**
      * 初始化
      * public void 称之为公共的。被它修饰的类，属性和方法不仅可以跨类访问， 而且允许跨包(package)访问。
-     * void dog没有加任何修饰符，我们通常说这是默认的访问模式。这种访问模式只允许在同一个包中进行访问。
+     * void 没有加任何修饰符，我们通常说这是默认的访问模式。这种访问模式只允许在同一个包中进行访问。
      */
     void initView() {
         // 根据解码模式进行对应的文字匹配显示
@@ -220,7 +243,7 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
      * @param bundle  存放了截图，或者是空的
      */
     @Override
-    public void scanResult(Result rawResult, Bundle bundle) {  //该方法在ScanManager.java中调用
+    public void scanResult(final Result rawResult, Bundle bundle) {  //该方法在ScanManager.java中调用
         if(!scanManager.isScanning()){  //如果当前不是在扫描状态
             //设置再次扫描按钮对用户可见
             rescan.setVisibility(View.VISIBLE);
@@ -244,6 +267,60 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
         scan_image.setVisibility(View.VISIBLE);
         tv_scan_result.setVisibility(View.VISIBLE);
         tv_scan_result.setText("扫描结果：" + rawResult.getText());
+
+       // 样式
+        // 进入动画
+        BounceTopEnter mBasIn = new BounceTopEnter();
+        // 退出动画
+        SlideBottomExit mBasOut = new SlideBottomExit();
+        final NormalDialog dialog = new NormalDialog(this);
+        dialog.content(rawResult.getText()) // （必须）内容文案
+                .btnNum(2)
+                .btnText("取消","复制")
+                // .contentGravity(Gravity.CENTER_VERTICAL)  // 内容的显示位置，默认为Gravity.CENTER_VERTICAL
+                // .contentTextColor(Color.RED) // 内容文字的颜色
+                // .contentTextSize(10)  // 内容文字大小，单位sp
+                // .isTitleShow(true)  // 是否显示标题，默认显示
+                .title("扫描结果")   // （必须）设置标题,如果不设置标题默认为：“温馨提示”
+                // .titleTextColor(Color.RED)  // 标题颜色
+                // .titleTextSize(10)  // 标题字体大小，单位sp
+                // .titleLineColor(Color.RED) // 设置标题下方分割线的颜色
+                // .dividerColor(Color.BLUE) // 设置分隔按钮的线的颜色
+                 .cornerRadius(5)  // 设置弹出的dialog的圆角程度，单位dp，默认值为3
+                // .bgColor(Color.BLACK) // 设置dialog的背景颜色，默认为：#ffffff（白色）
+                // .btnTextColor(Color.RED,Color.BLUE) // 设置按钮上字体的颜色
+                 .btnPressColor(Color.parseColor("#58ACFA"))// 按钮按下时的颜色
+                .showAnim(mBasIn) //
+                .dismissAnim(mBasOut)//
+                // .widthScale(0.85f)//设置对话框的宽度占屏幕宽度的比例0~1
+                .show();
+
+        dialog.setOnBtnClickL(
+                //取消
+                new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        dialog.dismiss();
+                    }
+                },
+                // 复制
+                new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        //获取剪贴板管理器：
+                        ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                        // 将ClipData内容放到系统剪贴板里。
+                        cm.setPrimaryClip(ClipData.newPlainText("copy", rawResult.getText()));
+                        dialog.dismiss();
+                        PromptDialog promptDialog = new PromptDialog(CommonScanActivity.this);
+                        promptDialog.showSuccess("复制成功");
+
+                    }
+                });
+
+
+
+
     }
 
     /**
@@ -256,6 +333,78 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
         //相机扫描出错时
         if(e.getMessage()!=null&&e.getMessage().startsWith("相机")){
             scanPreview.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    /**
+     * 相机权限动态申请
+     */
+
+    public void checkPermission()
+    {
+        int targetSdkVersion = 0;
+        String[] PermissionString={Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA};
+        try {
+            final PackageInfo info = this.getPackageManager().getPackageInfo(this.getPackageName(), 0);
+            targetSdkVersion = info.applicationInfo.targetSdkVersion;//获取应用的Target版本
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+//            Log.e("err", "检查权限_err0");
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            //Build.VERSION.SDK_INT是获取当前手机版本 Build.VERSION_CODES.M为6.0系统
+            //如果系统>=6.0
+            if (targetSdkVersion >= Build.VERSION_CODES.M) {
+                //第 1 步: 检查是否有相应的权限
+                boolean isAllGranted = checkPermissionAllGranted(PermissionString);
+                if (isAllGranted) {
+                    //Log.e("err","所有权限已经授权！");
+                    return;
+                }
+                // 一次请求多个权限, 如果其他有权限是已经授予的将会自动忽略掉
+                ActivityCompat.requestPermissions(this,
+                        PermissionString, 1);
+            }
+        }
+    }
+
+    /**
+     * 检查是否拥有指定的所有权限
+     */
+    private boolean checkPermissionAllGranted(String[] permissions) {
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                // 只要有一个权限没有被授予, 则直接返回 false
+                //Log.e("err","权限"+permission+"没有授权");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    //申请权限结果返回处理
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            boolean isAllGranted = true;
+            // 判断是否所有的权限都已经授予了
+            for (int grant : grantResults) {
+                if (grant != PackageManager.PERMISSION_GRANTED) {
+                    isAllGranted = false;
+                    break;
+                }
+            }
+            if (isAllGranted) {
+                // 所有的权限都授予了
+                Log.e("err","权限都授权了");
+            } else {
+                // 弹出对话框告诉用户需要权限的原因, 并引导用户去应用权限管理中手动打开权限按钮
+                //容易判断错
+                //MyDialog("提示", "某些权限未开启,请手动开启", 1) ;
+            }
         }
     }
 }

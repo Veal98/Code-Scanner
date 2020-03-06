@@ -61,8 +61,8 @@ public class CameraManager {
 
 	public CameraManager(Context context) {
 		this.context = context;
-		this.configManager = new CameraConfigurationManager(context);
-		previewCallback = new PreviewCallback(configManager);
+		this.configManager = new CameraConfigurationManager(context); //注入了context
+		previewCallback = new PreviewCallback(configManager); //将CameraConfigurationManager类的实例，注入到了PreviewCallback类中
 	}
 
 	/**

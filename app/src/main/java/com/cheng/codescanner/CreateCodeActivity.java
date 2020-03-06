@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
@@ -27,9 +28,15 @@ import androidx.core.app.ActivityCompat;
 
 import com.cheng.codescanner.utils.CommonUtil;
 import com.cheng.codescanner.zxing.encode.EncodingHandler;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Hashtable;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,9 +44,12 @@ import butterknife.OnClick;
 import me.leefeng.promptlibrary.PromptButton;
 import me.leefeng.promptlibrary.PromptDialog;
 
+import static android.provider.Telephony.Mms.Part.CHARSET;
+
 public class CreateCodeActivity extends Activity {
 
      /*ButterKnife绑定控件*/
+
     @Bind(R.id.et_code_key) //输入要生成码的内容
     EditText etCodeKey;
     @Bind(R.id.btn_create_code) //生成码Button
@@ -57,7 +67,6 @@ public class CreateCodeActivity extends Activity {
     Bitmap barCode = null;
 
 
-
     @Override
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
@@ -73,9 +82,10 @@ public class CreateCodeActivity extends Activity {
      */
     @OnClick({R.id.btn_create_code, R.id.btn_create_code_and_img, R.id.btn_save_2_code, R.id.btn_save_bar_code})
     public void clickListener(View view){
-        String key = etCodeKey.getText().toString(); //获取输入的内容
+        String key = etCodeKey.getText().toString(); //获取输入的内容，二维码信息
+
         switch (view.getId()){
-            case  R.id.btn_create_code: //生成码
+            case  R.id.btn_create_code: //生成码,添加文字
                 if(TextUtils.isEmpty(key)){
                     Toast.makeText(this,"请输入内容",Toast.LENGTH_SHORT).show();
                 }else{
@@ -90,6 +100,9 @@ public class CreateCodeActivity extends Activity {
 //                if(bitmap != null  && headBitmap != null)
 //                    createQRCodeBitmapWithPortrait(bitmap, headBitmap);
 //                break;
+
+
+
             case R.id.btn_create_code_and_img: //分享图片
                 if(qrCode==null){
                     PromptDialog promptDialog = new PromptDialog(this);
@@ -130,6 +143,7 @@ public class CreateCodeActivity extends Activity {
      * 生成二维码
      */
     private Bitmap create2Code(String key){
+        //生成二维码图片
         qrCode = null;
         try {
             // key是二维码代表的内容
@@ -141,7 +155,9 @@ public class CreateCodeActivity extends Activity {
             e.printStackTrace();
         }
         return qrCode;
+
     }
+
 
     /**
      * 生成条形码
@@ -156,6 +172,7 @@ public class CreateCodeActivity extends Activity {
         }
         return barCode;
     }
+
 
     /**
      * 初始化logo图像

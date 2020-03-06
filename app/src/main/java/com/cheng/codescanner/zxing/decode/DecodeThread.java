@@ -32,6 +32,7 @@ import java.util.concurrent.CountDownLatch;
 
 /**
  * This thread is decoding the images.
+ * 设置解码的格式，这里是一个可以优化的点，可以不用设置这么多格式，只设置与自己业务有关的解码格式。
  */
 public class DecodeThread extends Thread {
 
@@ -87,6 +88,9 @@ public class DecodeThread extends Thread {
 		return handler;
 	}
 
+	/**
+	 * 在子线程中实例化了一个 Handler 与当前线程绑定
+	 */
 	@Override
 	public void run() {
 		Looper.prepare();

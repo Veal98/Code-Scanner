@@ -27,10 +27,7 @@ import com.cheng.codescanner.zxing.decode.DecodeThread;
 import com.google.zxing.Result;
 
 /**
- * This class handles shouquan_ic_all the messaging which comprises the state machine for
- * capture.
- * 
- * @author dswitkin@google.com (Daniel Switkin)
+ * This class handles the messaging which comprises the state machine for capture.
  */
 public class CaptureActivityHandler extends Handler {
 
@@ -45,13 +42,17 @@ public class CaptureActivityHandler extends Handler {
 
 	public CaptureActivityHandler(ScanManager scanManager, CameraManager cameraManager, int decodeMode) {
 		this.scanManager = scanManager;
+		//新建一个线程并启动
 		decodeThread = new DecodeThread(scanManager, decodeMode);
 		decodeThread.start();
 		state = State.SUCCESS;
 
 		// Start ourselves capturing previews and decoding.
+		// 注入cameraManager
 		this.cameraManager = cameraManager;
+		//要求相机硬件开始将预览帧绘制到屏幕上
 		cameraManager.startPreview();
+		//开始预览，并且解码
 		restartPreviewAndDecode();
 	}
 
