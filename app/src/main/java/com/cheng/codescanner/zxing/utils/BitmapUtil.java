@@ -4,9 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
-/**
- * Created by 刘红亮 on 2015/7/23 22:30.
- */
+
 public class BitmapUtil {
 
 
@@ -39,7 +37,7 @@ public class BitmapUtil {
             inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
         }
         if(inSampleSize==0) return 1;
-        Log.e("hongliang","inSampleSize=" + inSampleSize);
+        Log.e("smallbeef","inSampleSize=" + inSampleSize);
         return inSampleSize;
     }
     public static Bitmap decodeBitmapFromPath(String photo_path, int reqWidth, int reqHeight) {

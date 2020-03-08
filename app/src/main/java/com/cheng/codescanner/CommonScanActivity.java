@@ -14,6 +14,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -238,6 +239,7 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
     }
 
     /**
+     * 扫描结果
      * 实现接口类 ScanListener
      * @param rawResult  结果对象
      * @param bundle  存放了截图，或者是空的
@@ -268,55 +270,66 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
         tv_scan_result.setVisibility(View.VISIBLE);
         tv_scan_result.setText("扫描结果：" + rawResult.getText());
 
-       // 样式
-        // 进入动画
-        BounceTopEnter mBasIn = new BounceTopEnter();
-        // 退出动画
-        SlideBottomExit mBasOut = new SlideBottomExit();
-        final NormalDialog dialog = new NormalDialog(this);
-        dialog.content(rawResult.getText()) // （必须）内容文案
-                .btnNum(2)
-                .btnText("取消","复制")
-                // .contentGravity(Gravity.CENTER_VERTICAL)  // 内容的显示位置，默认为Gravity.CENTER_VERTICAL
-                // .contentTextColor(Color.RED) // 内容文字的颜色
-                // .contentTextSize(10)  // 内容文字大小，单位sp
-                // .isTitleShow(true)  // 是否显示标题，默认显示
-                .title("扫描结果")   // （必须）设置标题,如果不设置标题默认为：“温馨提示”
-                // .titleTextColor(Color.RED)  // 标题颜色
-                // .titleTextSize(10)  // 标题字体大小，单位sp
-                // .titleLineColor(Color.RED) // 设置标题下方分割线的颜色
-                // .dividerColor(Color.BLUE) // 设置分隔按钮的线的颜色
-                 .cornerRadius(5)  // 设置弹出的dialog的圆角程度，单位dp，默认值为3
-                // .bgColor(Color.BLACK) // 设置dialog的背景颜色，默认为：#ffffff（白色）
-                // .btnTextColor(Color.RED,Color.BLUE) // 设置按钮上字体的颜色
-                 .btnPressColor(Color.parseColor("#58ACFA"))// 按钮按下时的颜色
-                .showAnim(mBasIn) //
-                .dismissAnim(mBasOut)//
-                // .widthScale(0.85f)//设置对话框的宽度占屏幕宽度的比例0~1
-                .show();
+        // 如果扫描结果为网址：则直接打开浏览器加载
+        if(rawResult.getText().startsWith("http://") || rawResult.getText().startsWith("https://")){
+            Uri url = Uri.parse(rawResult.getText());
+            Intent intent = new Intent(Intent.ACTION_VIEW, url);
+            startActivity(intent);
+        }
+        // 扫描结果是数字
+        else {
 
-        dialog.setOnBtnClickL(
-                //取消
-                new OnBtnClickL() {
-                    @Override
-                    public void onBtnClick() {
-                        dialog.dismiss();
-                    }
-                },
-                // 复制
-                new OnBtnClickL() {
-                    @Override
-                    public void onBtnClick() {
-                        //获取剪贴板管理器：
-                        ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                        // 将ClipData内容放到系统剪贴板里。
-                        cm.setPrimaryClip(ClipData.newPlainText("copy", rawResult.getText()));
-                        dialog.dismiss();
-                        PromptDialog promptDialog = new PromptDialog(CommonScanActivity.this);
-                        promptDialog.showSuccess("复制成功");
 
-                    }
-                });
+            // 样式
+            // 进入动画
+            BounceTopEnter mBasIn = new BounceTopEnter();
+            // 退出动画
+            SlideBottomExit mBasOut = new SlideBottomExit();
+            final NormalDialog dialog = new NormalDialog(this);
+            dialog.content(rawResult.getText()) // （必须）内容文案
+                    .btnNum(2)
+                    .btnText("取消","复制")
+                    // .contentGravity(Gravity.CENTER_VERTICAL)  // 内容的显示位置，默认为Gravity.CENTER_VERTICAL
+                    // .contentTextColor(Color.RED) // 内容文字的颜色
+                    // .contentTextSize(10)  // 内容文字大小，单位sp
+                    // .isTitleShow(true)  // 是否显示标题，默认显示
+                    .title("扫描结果")   // （必须）设置标题,如果不设置标题默认为：“温馨提示”
+                    // .titleTextColor(Color.RED)  // 标题颜色
+                    // .titleTextSize(10)  // 标题字体大小，单位sp
+                    // .titleLineColor(Color.RED) // 设置标题下方分割线的颜色
+                    // .dividerColor(Color.BLUE) // 设置分隔按钮的线的颜色
+                    .cornerRadius(5)  // 设置弹出的dialog的圆角程度，单位dp，默认值为3
+                    // .bgColor(Color.BLACK) // 设置dialog的背景颜色，默认为：#ffffff（白色）
+                    // .btnTextColor(Color.RED,Color.BLUE) // 设置按钮上字体的颜色
+                    .btnPressColor(Color.parseColor("#58ACFA"))// 按钮按下时的颜色
+                    .showAnim(mBasIn) //
+                    .dismissAnim(mBasOut)//
+                    // .widthScale(0.85f)//设置对话框的宽度占屏幕宽度的比例0~1
+                    .show();
+
+            dialog.setOnBtnClickL(
+                    //取消
+                    new OnBtnClickL() {
+                        @Override
+                        public void onBtnClick() {
+                            dialog.dismiss();
+                        }
+                    },
+                    // 复制
+                    new OnBtnClickL() {
+                        @Override
+                        public void onBtnClick() {
+                            //获取剪贴板管理器：
+                            ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                            // 将ClipData内容放到系统剪贴板里。
+                            cm.setPrimaryClip(ClipData.newPlainText("copy", rawResult.getText()));
+                            dialog.dismiss();
+                            PromptDialog promptDialog = new PromptDialog(CommonScanActivity.this);
+                            promptDialog.showSuccess("复制成功");
+
+                        }
+                    });
+        }
 
 
 
