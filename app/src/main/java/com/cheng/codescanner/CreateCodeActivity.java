@@ -1,50 +1,35 @@
 package com.cheng.codescanner;
 
-import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import androidx.core.app.ActivityCompat;
-
 import com.cheng.codescanner.utils.CommonUtil;
 import com.cheng.codescanner.zxing.encode.EncodingHandler;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.MultiFormatWriter;
+import com.flyco.dialog.listener.OnOperItemClickL;
+import com.flyco.dialog.widget.ActionSheetDialog;
 import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-
 import java.io.UnsupportedEncodingException;
-import java.util.Hashtable;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import me.leefeng.promptlibrary.PromptButton;
 import me.leefeng.promptlibrary.PromptDialog;
 
-import static android.provider.Telephony.Mms.Part.CHARSET;
 
 public class CreateCodeActivity extends Activity {
 
@@ -54,6 +39,10 @@ public class CreateCodeActivity extends Activity {
     EditText etCodeKey;
     @Bind(R.id.btn_create_code) //生成码Button
     Button btnCreateCode;
+    @Bind(R.id.btn_add_logo) //添加logo
+    Button btnAddLogo;
+    @Bind(R.id.btn_share_img) //分享
+    Button btnShareImage;
     @Bind(R.id.iv_2_code) //二维码图片
     ImageView iv2Code;
     @Bind(R.id.iv_bar_code) //条码图片
@@ -70,6 +59,8 @@ public class CreateCodeActivity extends Activity {
     @Override
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
+        qrCode = null;
+        barCode = null;
         setContentView(R.layout.activity_create_code);
         ButterKnife.bind(this);  //绑定初始化ButterKnife
         //验证权限
@@ -80,7 +71,7 @@ public class CreateCodeActivity extends Activity {
     /**
      * 按钮监听事件
      */
-    @OnClick({R.id.btn_create_code, R.id.btn_create_code_and_img, R.id.btn_save_2_code, R.id.btn_save_bar_code})
+    @OnClick({R.id.btn_create_code, R.id.btn_add_logo,R.id.btn_share_img, R.id.btn_save_2_code, R.id.btn_save_bar_code})
     public void clickListener(View view){
         String key = etCodeKey.getText().toString(); //获取输入的内容，二维码信息
 
@@ -94,7 +85,17 @@ public class CreateCodeActivity extends Activity {
                 }
                 break;
 
-//            case R.id.btn_create_code_and_img: //添加logo
+            case R.id.btn_add_logo: //添加logo
+                if(qrCode==null){
+                    PromptDialog promptDialog = new PromptDialog(this);
+                    promptDialog.showError("请先生成码");
+                    break;
+                }else {
+                    Bitmap headBitmap =getHeadBitmap(60);
+                    if(headBitmap != null)
+                        createQRCodeBitmapWithPortrait(qrCode,headBitmap);
+                    break;
+                }
 //                Bitmap bitmap = create2Code(key);
 //                Bitmap headBitmap =getHeadBitmap(60);
 //                if(bitmap != null  && headBitmap != null)
@@ -102,8 +103,7 @@ public class CreateCodeActivity extends Activity {
 //                break;
 
 
-
-            case R.id.btn_create_code_and_img: //分享图片
+            case R.id.btn_share_img: //分享图片
                 if(qrCode==null){
                     PromptDialog promptDialog = new PromptDialog(this);
                     promptDialog.showError("请先生成码");
@@ -226,6 +226,7 @@ public class CreateCodeActivity extends Activity {
         canvas.drawBitmap(portrait, rect2, rect1, null);
 
 
+
     }
 
     /**
@@ -273,40 +274,35 @@ public class CreateCodeActivity extends Activity {
     /**
      * 弹出选择框（分享二维码、分享条形码）
      *
-     * @author xch
+     * @author smallbeef
      */
-    private void showChooseDialog() {
+    public void showChooseDialog() {
+
+        final String[] stringItems = {"分享二维码", "分享条形码"};
+        final ActionSheetDialog dialog = new ActionSheetDialog(this, stringItems, null);
+        dialog.title("请选择")//
+                .titleTextSize_SP(14.5f)//
+                .show();
+
+        dialog.setOnOperItemClickL(new OnOperItemClickL() {
+            @Override
+            public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case 0:
+                        shareImg(qrCode);
+                        break;
+                    case 1:
+                        shareImg(barCode);
+                        break;
+                    default:
+                        break;
+                }
+                dialog.dismiss();
+            }
 
 
-
-        AlertDialog.Builder choiceBuilder = new AlertDialog.Builder(this);
-        choiceBuilder.setCancelable(false);
-        choiceBuilder
-                .setTitle("选择")
-                .setSingleChoiceItems(new String[]{"分享二维码", "分享条形码 "}, -1,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                switch (which) {
-                                    case 0://分享二维码
-                                        shareImg(qrCode);
-                                        break;
-                                    case 1:// 从相册选择
-                                        shareImg(barCode);
-                                        break;
-                                    default:
-                                        break;
-                                }
-                                dialog.dismiss();
-                            }
-                        })
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-
-        choiceBuilder.create();
-        choiceBuilder.show();
+        });
     }
+
+
 }
