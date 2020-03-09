@@ -8,91 +8,69 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.cheng.codescanner.utils.Constant;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//        ButterKnife.bind(this);  //绑定初始化ButterKnife
-//
-//    }
-//
-//    @OnClick({R.id.create_code, R.id.scan_2code, R.id.scan_bar_code, R.id.scan_code})
-//    public void clickListener(View view){
-//        Intent intent;
-//        switch (view.getId()){
-//            case R.id.create_code: //生成码
-//                intent = new Intent(this,CreateCodeActivity.class);
-//                startActivity(intent);
-//                break;
-//        }
-//    }
+    /*ButterKnife绑定控件*/
 
-    /**
-     * 此处监听使用内部类
-     * 和匿名内部类不同，使用优点:可以在该类中进行复用,可直接访问外部类的所有界面组件
-     */
+    @Bind(R.id.et_code_key) //输入要生成码的内容
+    EditText etCodeKey;
+    @Bind(R.id.btn_create_code) //生成码Button
+    Button btnCreateCode;
+    @Bind(R.id.btn_scan_code) //扫描
+    Button btnScanCode;
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button create_code = (Button) findViewById(R.id.create_code);
-//        Button scan_2code = (Button) findViewById(R.id.scan_2code);
-//        Button scan_bar_code = (Button) findViewById(R.id.scan_bar_code);
-        Button scan_code = (Button) findViewById(R.id.scan_code);
-        // 直接new一个内部类对象作为参数
-        create_code.setOnClickListener(new ClickListener());
-//        scan_2code.setOnClickListener(new ClickListener());
-//        scan_bar_code.setOnClickListener(new ClickListener());
-        scan_code.setOnClickListener(new ClickListener());
-
-
+        ButterKnife.bind(this);
 
     }
 
-    // 定义一个内部类，实现View.OnClickListener接口，并重写onClick()方法
-    class ClickListener implements View.OnClickListener{
-        @Override
-        public void onClick(View view){
-            Intent intent;
-            switch (view.getId()){
-                case R.id.create_code: //生成码
-                    intent = new Intent(MainActivity.this,CreateCodeActivity.class);
+    /**
+     * 按钮监听事件
+     */
+    @OnClick({R.id.btn_create_code, R.id.btn_scan_code})
+    public void clickListener(View view) {
+        String key = etCodeKey.getText().toString(); //获取输入的内容，二维码信息
+
+        switch (view.getId()) {
+            case R.id.btn_create_code: //生成码,添加文字
+                Intent intent;
+                if (TextUtils.isEmpty(key)) {
+                    Toast.makeText(this, "请输入内容", Toast.LENGTH_SHORT).show();
+                } else {
+                    intent = new Intent(MainActivity.this,CreateCodeSuccessActivity.class);
+                    intent.putExtra("etCodeKey", key);
                     startActivity(intent);
                     break;
+                }
+                break;
+            case R.id.btn_scan_code: //扫描条形码或者二维码
+                intent = new Intent(MainActivity.this, CommonScanActivity.class);
+                // putExtra("A",B)中，AB为键值对，第一个参数为键名，第二个参数为键对应的值。
+                // 如果想取出Intent对象中的这些值，需要在你的另一个Activity中用getXXXXXExtra方法，注意需要使用对应类型的方法，参数为键名
+                intent.putExtra(Constant.REQUEST_SCAN_MODE,Constant.REQUEST_SCAN_MODE_ALL_MODE);
+                startActivity(intent);
+                break;
 
-//                case R.id.scan_2code: //扫描二维码
-//                    intent = new Intent(MainActivity.this, CommonScanActivity.class);
-//                    // putExtra("A",B)中，AB为键值对，第一个参数为键名，第二个参数为键对应的值。
-//                    // 如果想取出Intent对象中的这些值，需要在另一个Activity中用getXXXXXExtra方法，注意需要使用对应类型的方法，参数为键名
-//                    intent.putExtra(Constant.REQUEST_SCAN_MODE,Constant.REQUEST_SCAN_MODE_QRCODE_MODE);
-//                    startActivity(intent);
-//                    break;
-//
-//                case R.id.scan_bar_code: //扫描条形码
-//                    intent = new Intent(MainActivity.this, CommonScanActivity.class);
-//                    intent.putExtra(Constant.REQUEST_SCAN_MODE, Constant.REQUEST_SCAN_MODE_BARCODE_MODE);
-//                    startActivity(intent);
-//                    break;
-
-                case R.id.scan_code: //扫描条形码或者二维码
-                    intent = new Intent(MainActivity.this, CommonScanActivity.class);
-                    // putExtra("A",B)中，AB为键值对，第一个参数为键名，第二个参数为键对应的值。
-                    // 如果想取出Intent对象中的这些值，需要在你的另一个Activity中用getXXXXXExtra方法，注意需要使用对应类型的方法，参数为键名
-                    intent.putExtra(Constant.REQUEST_SCAN_MODE,Constant.REQUEST_SCAN_MODE_ALL_MODE);
-                    startActivity(intent);
-                    break;
-
-            }
         }
     }
+
+
 }

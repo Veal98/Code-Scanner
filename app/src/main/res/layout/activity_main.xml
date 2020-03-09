@@ -4,95 +4,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
 
-<!--    <ImageView-->
-<!--        android:id="@+id/imageView"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="5px"-->
-<!--        android:layout_marginBottom="76dp"-->
-<!--        android:adjustViewBounds="true"-->
-<!--        android:maxWidth="160px"-->
-<!--        android:maxHeight="160px"-->
-<!--        android:src="@drawable/robot"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/textView"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.498"-->
-<!--        app:layout_constraintStart_toStartOf="parent" />-->
-
-    <!--    <Button-->
-<!--        android:id="@+id/scan_2code"-->
-<!--        android:layout_width="200dp"-->
-<!--        android:layout_height="63dp"-->
-<!--        android:layout_marginTop="35dp"-->
-<!--        android:background="@drawable/btn_shape"-->
-<!--        android:text="扫描二维码"-->
-<!--        android:textSize="20sp"-->
-<!--        android:textStyle="bold"-->
-<!--        android:typeface="sans"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.502"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/scan_bar_code" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/scan_bar_code"-->
-<!--        android:layout_width="200dp"-->
-<!--        android:layout_height="63dp"-->
-<!--        android:layout_marginTop="35dp"-->
-<!--        android:background="@drawable/btn_shape"-->
-<!--        android:text="扫描条形码"-->
-<!--        android:textSize="20sp"-->
-<!--        android:textStyle="bold"-->
-<!--        android:typeface="sans"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.502"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/scan_code" />-->
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="254dp"
-        android:layout_height="34dp"
-        android:layout_marginTop="50dp"
+    <EditText
+        android:id="@+id/et_code_key"
+        android:layout_width="296dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="20dp"
         android:gravity="center"
-        android:text="二维码/条形码生成和识别系统"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="#000000"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:typeface="sans"
-        app:layout_constraintBottom_toTopOf="@+id/create_code"
+        android:hint="输入要生成码的内容"
+        android:padding="10dp"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.666" />
+        app:layout_constraintVertical_bias="0.13" />
 
     <Button
-        android:id="@+id/create_code"
+        android:id="@+id/btn_create_code"
         android:layout_width="200dp"
         android:layout_height="63dp"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="60dp"
         android:layout_marginBottom="412dp"
         android:background="@drawable/btn_shape1"
         android:text="生成二维码/条形码"
         android:textSize="20sp"
         android:textStyle="bold"
         android:typeface="sans"
-        app:layout_constraintBottom_toTopOf="@+id/scan_code"
+        app:layout_constraintBottom_toTopOf="@+id/btn_scan_code"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/et_code_key" />
 
     <Button
-        android:id="@+id/scan_code"
+        android:id="@+id/btn_scan_code"
         android:layout_width="200dp"
         android:layout_height="63dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="60dp"
         android:background="@drawable/btn_shape"
         android:text="扫描二维码/条形码"
         android:textSize="20sp"
@@ -101,7 +58,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_code" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_create_code" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

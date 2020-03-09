@@ -93,7 +93,7 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
         super.onCreate(icicle);
         setContentView(R.layout.activity_scan_code);
         ButterKnife.bind(this);
-        // 利用getIntExtra() 取出MainActivity中的putExtra()传入的值,设置扫描模式
+        // 利用getIntExtra() 取出其他Activity中的putExtra()传入的值,设置扫描模式
         scanMode = getIntent().getIntExtra(Constant.REQUEST_SCAN_MODE, Constant.REQUEST_SCAN_MODE_ALL_MODE);
         checkPermission(); //摄像头权限申请
         initView();

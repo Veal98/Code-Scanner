@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <Button
+        android:id="@+id/btn_add_logo"
+        android:layout_width="110dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="40dp"
+        android:layout_weight="1"
+        android:background="@drawable/btn_shape1"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="添加logo"
+        android:textSize="17sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="3px"
+        android:layout_marginTop="56dp"
+        android:background="#66CCFF"
+        app:layout_constraintTop_toBottomOf="@+id/iv_bar_code"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/btn_share_img"
+        android:layout_width="107dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="60dp"
+        android:layout_weight="1"
+        android:background="@drawable/btn_shape1"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="分享图片"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view" />
+
+    <Button
+        android:id="@+id/btn_save_2_code"
+        android:layout_width="108dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="30dp"
+        android:layout_weight="1"
+        android:background="@drawable/btn_shape1"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="保存二维码"
+        android:textSize="17sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_add_logo" />
+
+    <Button
+        android:id="@+id/btn_save_bar_code"
+        android:layout_width="107dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="60dp"
+        android:layout_weight="1"
+        android:background="@drawable/btn_shape1"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="保存条形码"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_share_img" />
+
+
+
+    <ImageButton
+        android:id="@+id/btn_circle_scan"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_weight="1"
+        android:background="@drawable/scan"
+
+        android:gravity="center"
+        android:padding="10dp"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_save_bar_code"
+        app:layout_constraintEnd_toStartOf="@+id/btn_share_img"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btn_add_logo"
+        app:layout_constraintTop_toBottomOf="@+id/btn_add_logo" />
+
+
+
+    <ImageView
+        android:id="@+id/iv_2_code"
+        android:layout_width="239dp"
+        android:layout_height="221dp"
+        android:layout_marginTop="56dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_bar_code"
+        android:layout_width="323dp"
+        android:layout_height="99dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="296dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_2_code" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

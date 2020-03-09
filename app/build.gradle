@@ -34,6 +34,8 @@ dependencies {
     //Github Dialog样式
     implementation 'com.github.limxing:Android-PromptDialog:1.1.3'
     implementation 'com.flyco.dialog:FlycoDialog_Lib:1.3.2@aar'
+    // AndroidEdit 文本框撤销和恢复
+    implementation 'ren.qinc.edit:lib:0.0.5'
 
 
 }

@@ -16,10 +16,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 import com.cheng.codescanner.utils.CommonUtil;
+import com.cheng.codescanner.utils.Constant;
 import com.cheng.codescanner.zxing.encode.EncodingHandler;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.ActionSheetDialog;
@@ -31,26 +33,25 @@ import butterknife.OnClick;
 import me.leefeng.promptlibrary.PromptDialog;
 
 
-public class CreateCodeActivity extends Activity {
+public class CreateCodeSuccessActivity extends Activity {
 
-     /*ButterKnife绑定控件*/
+    /*ButterKnife绑定控件*/
 
-    @Bind(R.id.et_code_key) //输入要生成码的内容
-    EditText etCodeKey;
-    @Bind(R.id.btn_create_code) //生成码Button
-    Button btnCreateCode;
+
     @Bind(R.id.btn_add_logo) //添加logo
-    Button btnAddLogo;
+            Button btnAddLogo;
     @Bind(R.id.btn_share_img) //分享
-    Button btnShareImage;
+            Button btnShareImage;
     @Bind(R.id.iv_2_code) //二维码图片
-    ImageView iv2Code;
+            ImageView iv2Code;
     @Bind(R.id.iv_bar_code) //条码图片
-    ImageView ivBarCode;
+            ImageView ivBarCode;
     @Bind(R.id.btn_save_2_code) //保存二维码
-    Button save2Code;
+            Button save2Code;
     @Bind(R.id.btn_save_bar_code) //保存条形码
-    Button saveBarCode;
+            Button saveBarCode;
+    @Bind(R.id.btn_circle_scan) //圆形按钮扫描
+            ImageButton circleScan;
 
     Bitmap qrCode = null;
     Bitmap barCode = null;
@@ -61,29 +62,26 @@ public class CreateCodeActivity extends Activity {
         super.onCreate(saveInstanceState);
         qrCode = null;
         barCode = null;
-        setContentView(R.layout.activity_create_code);
+        setContentView(R.layout.activity_create_success);
         ButterKnife.bind(this);  //绑定初始化ButterKnife
         //验证权限
-        verifyStoragePermissions(this);
+
+        Intent intent = getIntent();
+        String key = intent.getStringExtra("etCodeKey"); //获取MainActivity传值
+        create2Code(key);
+        createBarCode(key);
+        PromptDialog promptDialog = new PromptDialog(this);
+        promptDialog.showSuccess("生成码成功！");
     }
 
 
     /**
      * 按钮监听事件
      */
-    @OnClick({R.id.btn_create_code, R.id.btn_add_logo,R.id.btn_share_img, R.id.btn_save_2_code, R.id.btn_save_bar_code})
+    @OnClick({R.id.btn_add_logo,R.id.btn_share_img, R.id.btn_save_2_code, R.id.btn_save_bar_code, R.id.btn_circle_scan})
     public void clickListener(View view){
-        String key = etCodeKey.getText().toString(); //获取输入的内容，二维码信息
 
         switch (view.getId()){
-            case  R.id.btn_create_code: //生成码,添加文字
-                if(TextUtils.isEmpty(key)){
-                    Toast.makeText(this,"请输入内容",Toast.LENGTH_SHORT).show();
-                }else{
-                    create2Code(key);
-                    createBarCode(key);
-                }
-                break;
 
             case R.id.btn_add_logo: //添加logo
                 if(qrCode==null){
@@ -92,16 +90,13 @@ public class CreateCodeActivity extends Activity {
                     break;
                 }else {
                     Bitmap headBitmap =getHeadBitmap(60);
-                    if(headBitmap != null)
-                        createQRCodeBitmapWithPortrait(qrCode,headBitmap);
+                    if(headBitmap != null) {
+                        createQRCodeBitmapWithPortrait(qrCode, headBitmap);
+                        PromptDialog promptDialog = new PromptDialog(this);
+                        promptDialog.showSuccess("添加成功！");
+                    }
                     break;
                 }
-//                Bitmap bitmap = create2Code(key);
-//                Bitmap headBitmap =getHeadBitmap(60);
-//                if(bitmap != null  && headBitmap != null)
-//                    createQRCodeBitmapWithPortrait(bitmap, headBitmap);
-//                break;
-
 
             case R.id.btn_share_img: //分享图片
                 if(qrCode==null){
@@ -136,6 +131,14 @@ public class CreateCodeActivity extends Activity {
                     promptDialog2.showSuccess("条形码保存成功");
                     break;
                 }
+
+            case R.id.btn_circle_scan: //圆形扫描按钮
+                Intent intent = new Intent(CreateCodeSuccessActivity.this, CommonScanActivity.class);
+                // putExtra("A",B)中，AB为键值对，第一个参数为键名，第二个参数为键对应的值。
+                // 如果想取出Intent对象中的这些值，需要在你的另一个Activity中用getXXXXXExtra方法，注意需要使用对应类型的方法，参数为键名
+                intent.putExtra(Constant.REQUEST_SCAN_MODE,Constant.REQUEST_SCAN_MODE_ALL_MODE);
+                startActivity(intent);
+                break;
         }
     }
 
@@ -188,7 +191,7 @@ public class CreateCodeActivity extends Activity {
             float width = portrait.getWidth();  //获取位图的宽度 Bitmap的常用方法
             float height = portrait.getHeight(); //获取位图的高度
             // setScale(float sx,float sy)：缩放-> 参数1：x方向缩放倍数； 参数2：y方向缩放倍数
-             mMatrix.setScale(size / width, size / height);
+            mMatrix.setScale(size / width, size / height);
             // public static Bitmap createBitmap(Bitmap source, int x, int y, int width, int height, Matrix m, boolean filter)
             // 以source为原图创建新的图片，指定起始坐标，新图像的高宽，对像素值进行变换的可选矩阵，新图像的宽高是否可变。
             return Bitmap.createBitmap(portrait, 0, 0, (int) width, (int) height, mMatrix, true);
@@ -229,30 +232,7 @@ public class CreateCodeActivity extends Activity {
 
     }
 
-    /**
-     * 权限认证
-     */
 
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;
-    private static String[] PERMISSIONS_STORAGE = {
-            "android.permission.READ_EXTERNAL_STORAGE",
-            "android.permission.WRITE_EXTERNAL_STORAGE" };
-
-
-    public static void verifyStoragePermissions(Activity activity) {
-
-        try {
-            //检测是否有写的权限
-            int permission = ActivityCompat.checkSelfPermission(activity,
-                    "android.permission.WRITE_EXTERNAL_STORAGE");
-            if (permission != PackageManager.PERMISSION_GRANTED) {
-                // 没有写的权限，去申请写的权限，会弹出对话框
-                ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE,REQUEST_EXTERNAL_STORAGE);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 
 
