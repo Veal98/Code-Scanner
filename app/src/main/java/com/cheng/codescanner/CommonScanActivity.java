@@ -276,11 +276,15 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
             Intent intent = new Intent(Intent.ACTION_VIEW, url);
             startActivity(intent);
         }
+        // 扫描结果是图片
+//        else if(rawResult.getText().endsWith(".jpg") || rawResult.getText().endsWith(".jpeg") || rawResult.getText().endsWith(".png")){
+//            Uri url = Uri.parse(rawResult.getText());
+//            Intent intent = new Intent(Intent.ACTION_VIEW, url);
+//            startActivity(intent);
+//        }
+
         // 扫描结果是数字
         else {
-
-
-            // 样式
             // 进入动画
             BounceTopEnter mBasIn = new BounceTopEnter();
             // 退出动画
@@ -330,6 +334,7 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
                         }
                     });
         }
+
 
 
 

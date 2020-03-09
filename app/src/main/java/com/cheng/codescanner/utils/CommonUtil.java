@@ -89,7 +89,7 @@ public class CommonUtil {
             e.printStackTrace();
         }
 
-        // 其次把文件插入到系统图库
+//         其次把文件插入到系统图库
         try {
             MediaStore.Images.Media.insertImage(context.getContentResolver(),
                     file.getAbsolutePath(), fileName, null);

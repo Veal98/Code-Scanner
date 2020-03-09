@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.cheng.codescanner"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -34,5 +34,6 @@ dependencies {
     //Github Dialog样式
     implementation 'com.github.limxing:Android-PromptDialog:1.1.3'
     implementation 'com.flyco.dialog:FlycoDialog_Lib:1.3.2@aar'
+
 
 }
