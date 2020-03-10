@@ -1,6 +1,7 @@
 package com.cheng.codescanner;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
@@ -12,6 +13,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.cheng.codescanner.utils.Constant;
@@ -30,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     Button btnCreateCode;
     @Bind(R.id.btn_scan_code) //扫描
     Button btnScanCode;
+    @Bind(R.id.btn_clear) //清除文本框
+    ImageButton btnClear;
+
 
 
 
@@ -45,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 按钮监听事件
      */
-    @OnClick({R.id.btn_create_code, R.id.btn_scan_code})
+    @OnClick({R.id.btn_create_code, R.id.btn_scan_code, R.id.btn_clear})
     public void clickListener(View view) {
         String key = etCodeKey.getText().toString(); //获取输入的内容，二维码信息
 
@@ -68,6 +73,10 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(Constant.REQUEST_SCAN_MODE,Constant.REQUEST_SCAN_MODE_ALL_MODE);
                 startActivity(intent);
                 break;
+            case R.id.btn_clear: //文本框清除
+                etCodeKey.setText("");
+                break;
+
 
         }
     }

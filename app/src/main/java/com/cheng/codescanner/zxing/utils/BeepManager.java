@@ -33,6 +33,7 @@ import java.io.IOException;
 
 
 /**
+ * 控制扫码声音和震动
  */
 public class BeepManager implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, Closeable {
 
@@ -75,6 +76,10 @@ public class BeepManager implements MediaPlayer.OnCompletionListener, MediaPlaye
 		}
 	}
 
+	/**
+	 * 判断是否能够在识别成功时发出声音，
+	 * 如果用户选择了静音模式或者震动模式，则返回false表示不发出声音
+	 */
 	static boolean shouldBeep(SharedPreferences prefs, Context activity) {
 		boolean shouldPlayBeep = true;
 		if (shouldPlayBeep) {
@@ -137,5 +142,7 @@ public class BeepManager implements MediaPlayer.OnCompletionListener, MediaPlaye
 			mediaPlayer = null;
 		}
 	}
+
+
 
 }
