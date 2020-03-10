@@ -184,7 +184,7 @@ public class CreateCodeSuccessActivity extends Activity {
         try {
             // BitmapFactory：创建Bitmap的接口类
             // decodeResrource(Resourse, int)： 通过资源id获取Bitmap位图
-            Bitmap portrait = BitmapFactory.decodeResource(getResources(),R.drawable.robot);
+            Bitmap portrait = BitmapFactory.decodeResource(getResources(),R.drawable.light);
             // 获取到位图之后对位图进行操作
             // 对原有图片压缩显示大小
             Matrix mMatrix = new Matrix();  // 创建矩阵matrix用来操作图像
