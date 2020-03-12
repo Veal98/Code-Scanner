@@ -2,31 +2,32 @@ package com.cheng.codescanner;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
-import androidx.core.app.ActivityCompat;
+
 import com.cheng.codescanner.utils.CommonUtil;
 import com.cheng.codescanner.utils.Constant;
 import com.cheng.codescanner.zxing.encode.EncodingHandler;
+import com.flyco.dialog.entity.DialogMenuItem;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.ActionSheetDialog;
+import com.flyco.dialog.widget.NormalListDialog;
 import com.google.zxing.WriterException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -89,14 +90,119 @@ public class CreateCodeSuccessActivity extends Activity {
                     promptDialog.showError("请先生成码");
                     break;
                 }else {
-                    Bitmap headBitmap =getHeadBitmap(60);
-                    if(headBitmap != null) {
-                        createQRCodeBitmapWithPortrait(qrCode, headBitmap);
-                        PromptDialog promptDialog = new PromptDialog(this);
-                        promptDialog.showSuccess("添加成功！");
-                    }
+                    // logo库
+                    final ArrayList<DialogMenuItem> menuItems = new ArrayList<>();
+                    menuItems.add(new DialogMenuItem("Logo 1", R.drawable.logo1));
+                    menuItems.add(new DialogMenuItem("Logo 2", R.drawable.logo2));
+                    menuItems.add(new DialogMenuItem("Logo 3", R.drawable.logo3));
+                    menuItems.add(new DialogMenuItem("Logo 4", R.drawable.logo4));
+                    menuItems.add(new DialogMenuItem("Logo 5", R.drawable.logo5));
+                    menuItems.add(new DialogMenuItem("Logo 6", R.drawable.logo6));
+                    menuItems.add(new DialogMenuItem("Logo 7", R.drawable.logo7));
+                    menuItems.add(new DialogMenuItem("Logo 8", R.drawable.logo8));
+                    menuItems.add(new DialogMenuItem("Logo 9", R.drawable.logo9));
+                    menuItems.add(new DialogMenuItem("Logo 10", R.drawable.logo10));
+                    menuItems.add(new DialogMenuItem("Logo 11", R.drawable.logo11));
+                    menuItems.add(new DialogMenuItem("Logo 12", R.drawable.logo12));
+
+
+                    final NormalListDialog normalListDialog = new NormalListDialog(this, menuItems);
+                    normalListDialog.title("请选择 Logo")
+                            .titleBgColor(Color.parseColor("#42CAFB"))
+                            .cornerRadius(20)
+                            .widthScale(0.8f)
+                            .show();
+                    normalListDialog.setOnOperItemClickL(new OnOperItemClickL() {
+                        // dialog点击监听事件
+                        @Override
+                        public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Bitmap headBitmap = null;
+                            // 重新根据key生成二维码，解决logo重叠问题
+                            Intent intent = getIntent();
+                            String key = intent.getStringExtra("etCodeKey"); //获取MainActivity传值
+                            create2Code(key);
+                            switch(menuItems.get(position).mResId){
+                                case R.drawable.logo1:
+                                    normalListDialog.dismiss();
+                                    headBitmap = getHeadBitmap(80, R.drawable.logo1);
+                                    createQRCodeBitmapWithPortrait(qrCode, headBitmap);
+                                    dialog();
+                                    break;
+                                case R.drawable.logo2:
+                                    normalListDialog.dismiss();
+                                    headBitmap = getHeadBitmap(80, R.drawable.logo2);
+                                    createQRCodeBitmapWithPortrait(qrCode, headBitmap);
+                                    dialog();
+                                    break;
+                                case R.drawable.logo3:
+                                    normalListDialog.dismiss();
+                                    headBitmap = getHeadBitmap(80, R.drawable.logo3);
+                                    createQRCodeBitmapWithPortrait(qrCode, headBitmap);
+                                    dialog();
+                                    break;
+                                case R.drawable.logo4:
+                                    normalListDialog.dismiss();
+                                    headBitmap = getHeadBitmap(80, R.drawable.logo4);
+                                    createQRCodeBitmapWithPortrait(qrCode, headBitmap);
+                                    dialog();
+                                    break;
+                                case R.drawable.logo5:
+                                    normalListDialog.dismiss();
+                                    headBitmap = getHeadBitmap(80, R.drawable.logo5);
+                                    createQRCodeBitmapWithPortrait(qrCode, headBitmap);
+                                    dialog();
+                                    break;
+                                case R.drawable.logo6:
+                                    normalListDialog.dismiss();
+                                    headBitmap = getHeadBitmap(80, R.drawable.logo6);
+                                    createQRCodeBitmapWithPortrait(qrCode, headBitmap);
+                                    dialog();
+                                    break;
+                                case R.drawable.logo7:
+                                    normalListDialog.dismiss();
+                                    headBitmap = getHeadBitmap(80, R.drawable.logo7);
+                                    createQRCodeBitmapWithPortrait(qrCode, headBitmap);
+                                    dialog();
+                                    break;
+                                case R.drawable.logo8:
+                                    normalListDialog.dismiss();
+                                    headBitmap = getHeadBitmap(80, R.drawable.logo8);
+                                    createQRCodeBitmapWithPortrait(qrCode, headBitmap);
+                                    dialog();
+                                    break;
+                                case R.drawable.logo9:
+                                    normalListDialog.dismiss();
+                                    headBitmap = getHeadBitmap(80, R.drawable.logo9);
+                                    createQRCodeBitmapWithPortrait(qrCode, headBitmap);
+                                    dialog();
+                                    break;
+                                case R.drawable.logo10:
+                                    normalListDialog.dismiss();
+                                    headBitmap = getHeadBitmap(80, R.drawable.logo10);
+                                    createQRCodeBitmapWithPortrait(qrCode, headBitmap);
+                                    dialog();
+                                    break;
+                                case R.drawable.logo11:
+                                    normalListDialog.dismiss();
+                                    headBitmap = getHeadBitmap(80, R.drawable.logo11);
+                                    createQRCodeBitmapWithPortrait(qrCode, headBitmap);
+                                    dialog();
+                                    break;
+                                case R.drawable.logo12:
+                                    normalListDialog.dismiss();
+                                    headBitmap = getHeadBitmap(80, R.drawable.logo12);
+                                    createQRCodeBitmapWithPortrait(qrCode, headBitmap);
+                                    dialog();
+                                    break;
+
+                            }
+                        }
+                    });
+
+
                     break;
                 }
+
 
             case R.id.btn_share_img: //分享图片
                 if(qrCode==null){
@@ -150,7 +256,7 @@ public class CreateCodeSuccessActivity extends Activity {
         qrCode = null;
         try {
             // key是二维码代表的内容
-            qrCode = EncodingHandler.create2Code(key,400);
+            qrCode = EncodingHandler.create2Code(key,500);
             iv2Code.setImageBitmap(qrCode);
         } catch (WriterException e) {
             e.printStackTrace();
@@ -180,11 +286,11 @@ public class CreateCodeSuccessActivity extends Activity {
     /**
      * 初始化logo图像
      */
-    private Bitmap getHeadBitmap(int size) {
+    private Bitmap getHeadBitmap(int size ,int id) {
         try {
             // BitmapFactory：创建Bitmap的接口类
             // decodeResrource(Resourse, int)： 通过资源id获取Bitmap位图
-            Bitmap portrait = BitmapFactory.decodeResource(getResources(),R.drawable.light);
+            Bitmap portrait = BitmapFactory.decodeResource(getResources(), id);
             // 获取到位图之后对位图进行操作
             // 对原有图片压缩显示大小
             Matrix mMatrix = new Matrix();  // 创建矩阵matrix用来操作图像
@@ -228,11 +334,15 @@ public class CreateCodeSuccessActivity extends Activity {
         // 参数1.需要绘制的bitmap对象 2.要绘制的bitmap区域 3.要将bitmap绘制在屏幕的什么地方 4.绘制的画笔
         canvas.drawBitmap(portrait, rect2, rect1, null);
 
-
-
     }
 
-
+    /**
+     * 添加成功dialog操作封装
+     */
+    private void dialog(){
+        PromptDialog promptDialog1 = new PromptDialog(CreateCodeSuccessActivity.this);
+        promptDialog1.showSuccess("添加成功！");
+    }
 
 
 

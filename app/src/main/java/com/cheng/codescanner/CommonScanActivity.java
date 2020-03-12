@@ -55,10 +55,7 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
     Button rescan;
     @Bind(R.id.scan_image) //扫描的图片
     ImageView scan_image;
-    @Bind(R.id.authorize_return) //左上角返回键
-    ImageView authorize_return;
-    @Bind(R.id.common_title_TV_center) //扫描界面顶部Title
-    TextView title;
+
     @Bind(R.id.scan_hint) //提示性文字
     TextView scan_hint;
     @Bind(R.id.tv_scan_result) //扫描结果
@@ -127,20 +124,6 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
      */
     void initView() {
         // 根据解码模式进行对应的文字匹配显示
-        switch(scanMode){
-            case DecodeThread.BARCODE_MODE:
-                title.setText("条形码扫描");
-                scan_hint.setText("将条形码对入取景框，即可自动扫描");
-                break;
-            case DecodeThread.QRCODE_MODE:
-                title.setText("二维码扫描");
-                scan_hint.setText("将二维码对入取景框，即可自动扫描");
-                break;
-            case DecodeThread.ALL_MODE:
-                    title.setText("二维码或条形码扫描");
-                    scan_hint.setText("将二维码或条形码对入取景框，即可自动扫描");
-                    break;
-        }
         scanPreview = (SurfaceView) findViewById(R.id.capture_preview);  //整个扫描界面
         scanContainer = findViewById(R.id.capture_container);  //整个扫描界面容器
         scanCropView = findViewById(R.id.capture_crop_view);  //扫描框和动态红线
@@ -152,7 +135,6 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
         iv_light = (TextView) findViewById(R.id.iv_light);  //闪光灯
         iv_light.setOnClickListener(this);
         rescan.setOnClickListener(this);  //为再次扫描绑定监听事件
-        authorize_return.setOnClickListener(this);  //左上角返回主界面
         // 构造出扫描管理器
         scanManager = new ScanManager(this, scanPreview, scanContainer, scanCropView, scanLine, scanMode,this);
 
@@ -168,9 +150,6 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
                 scanManager.switchLight();
                 break;
             case R.id.qrcode_ic_back: //退出扫码
-                finish();
-                break;
-            case R.id.authorize_return: //左上角返回
                 finish();
                 break;
             case R.id.service_register_rescan: //再次扫描
