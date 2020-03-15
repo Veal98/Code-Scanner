@@ -12,11 +12,14 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.cheng.codescanner.utils.Constant;
+import com.cheng.codescanner.zxing.utils.BeepManager;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
     Button btnScanCode;
     @Bind(R.id.btn_clear) //清除文本框
     ImageButton btnClear;
-
+    @Bind(R.id.btn_show_history)
+    Button btnShowHistory;
 
 
     @Override
@@ -48,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 按钮监听事件
      */
-    @OnClick({R.id.btn_create_code, R.id.btn_scan_code, R.id.btn_clear})
+    @OnClick({R.id.btn_create_code, R.id.btn_scan_code, R.id.btn_clear,R.id.btn_show_history})
     public void clickListener(View view) {
         String key = etCodeKey.getText().toString(); //获取输入的内容，二维码信息
 
@@ -74,6 +78,13 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btn_clear: //文本框清除
                 etCodeKey.setText("");
                 break;
+            case R.id.btn_show_history:
+                intent = new Intent(MainActivity.this, HistoryActivity.class);
+                startActivity(intent);
+                break;
+
+
+
 
 
         }

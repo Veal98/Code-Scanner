@@ -2,15 +2,15 @@ package com.cheng.codescanner;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -24,7 +24,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +32,8 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.cheng.codescanner.utils.CommonUtil;
+
+import com.cheng.codescanner.history.DBHelper;
 import com.cheng.codescanner.utils.Constant;
 import com.cheng.codescanner.zxing.ScanListener;
 import com.cheng.codescanner.zxing.ScanManager;
@@ -44,6 +44,11 @@ import com.flyco.animation.SlideExit.SlideBottomExit;
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
 import com.google.zxing.Result;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -76,6 +81,7 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
     TextView qrcode_g_gallery;  //打开图库
     TextView qrcode_ic_back;   //取消扫描
 
+    private SQLiteDatabase db;
 
     /**
      * 此处监听使用匿名内部类 + ButterKnife
@@ -93,6 +99,11 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
         // 利用getIntExtra() 取出其他Activity中的putExtra()传入的值,设置扫描模式
         scanMode = getIntent().getIntExtra(Constant.REQUEST_SCAN_MODE, Constant.REQUEST_SCAN_MODE_ALL_MODE);
         checkPermission(); //摄像头权限申请
+
+        // 创建数据库
+        DBHelper dbHelper = new DBHelper(CommonScanActivity.this, "db_history", null, 3);
+        db = dbHelper.getWritableDatabase();
+
         initView();
     }
 
@@ -248,6 +259,20 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
         scan_image.setVisibility(View.VISIBLE);
         tv_scan_result.setVisibility(View.VISIBLE);
         tv_scan_result.setText("扫描结果：" + rawResult.getText());
+
+        // 获取当前时间
+        Date date = new Date();
+        String time = date.toLocaleString();
+        System.out.println(time);
+
+        // 插入数据库
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("history_time",time);
+        contentValues.put("history_text", rawResult.getText());
+        db.insert("history", null, contentValues);
+        System.out.println("插入成功");
+
+
 
         // 如果扫描结果为网址：则直接打开浏览器加载
         if(rawResult.getText().startsWith("http://") || rawResult.getText().startsWith("https://")){

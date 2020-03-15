@@ -35,6 +35,9 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Map;
 
+/**
+ * 扫描二维码/条形码
+ */
 public class ScanManager implements SurfaceHolder.Callback{
 	boolean isHasSurface = false;
 	CameraManager cameraManager;
@@ -199,6 +202,7 @@ public class ScanManager implements SurfaceHolder.Callback{
 			listener.scanError(new Exception("相机打开出错，请检查是否被禁止了该权限！"));
 		}
 	}
+
 	/**
 	 * 开关闪关灯
 	 */
@@ -220,6 +224,7 @@ public class ScanManager implements SurfaceHolder.Callback{
 	public Rect getCropRect() {
 		return mCropRect;
 	}
+
 	/**
 	 * 扫描成功的结果回调
 	 * @param rawResult
