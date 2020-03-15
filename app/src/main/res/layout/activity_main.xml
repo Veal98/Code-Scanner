@@ -11,20 +11,21 @@
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent">
 
-        <!--        <ImageView-->
-        <!--            android:layout_width="29dp"-->
-        <!--            android:layout_height="22dp"-->
-        <!--            android:layout_marginStart="10dp"-->
-        <!--            android:layout_marginTop="40dp"-->
-        <!--            android:background="@drawable/right"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="parent" />-->
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/right"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/et_code_key"
@@ -96,49 +97,113 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--侧滑布局-->
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="350sp"
         android:layout_height="match_parent"
         android:layout_gravity="left"
         android:background="@drawable/background"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <ImageView
+            android:id="@+id/drawer_scan_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/drawer_scan"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_conversion_absoluteHeight="100dp"
+            tools:layout_conversion_absoluteWidth="100dp" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="259dp"
+            android:layout_height="197dp"
+            android:layout_marginTop="200dp"
+            android:text="🎈 个人作品： 实现二维码和条形码的生成和识别，并提供logo嵌入、分享、保存、复制扫码结果、开关闪关灯、扫码历史记录查询/清除等功能。\n不申请多余权限，不占用多余内存。\n \n👉 [注] 本软件所有图标均来自阿里图标库。"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <Button
             android:id="@+id/btn_show_history"
-            android:layout_width="200dp"
-            android:layout_height="63dp"
-            android:layout_marginTop="50dp"
+            android:layout_width="129dp"
+            android:layout_height="46dp"
+            android:layout_marginTop="450dp"
+            android:layout_marginBottom="30dp"
             android:background="@drawable/btn_shape"
             android:text="扫描历史"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             android:textStyle="bold"
             android:typeface="sans"
-            android:layout_gravity="center"
+            app:layout_constraintBottom_toTopOf="@+id/light_image"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
-             />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:layout_conversion_absoluteHeight="63dp"
+            tools:layout_conversion_absoluteWidth="200dp" />
 
 
+        <Button
+            android:id="@+id/btn_github"
+            android:layout_width="129dp"
+            android:layout_height="46dp"
+            android:layout_marginTop="550dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/btn_shape"
+            android:text="源码地址"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:typeface="sans"
+            app:layout_constraintBottom_toTopOf="@+id/btn_show_history"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.147"
+            tools:layout_conversion_absoluteHeight="63dp"
+            tools:layout_conversion_absoluteWidth="200dp" />
 
         <ImageView
+            android:id="@+id/light_image"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:id="@+id/light_image"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/logo1"
-            android:layout_marginTop="100dp"
-            app:layout_constraintStart_toStartOf="@id/btn_show_history"
-            android:layout_gravity="center"/>
+            app:layout_constraintBottom_toTopOf="@+id/tx_copyright"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:id="@+id/tx_copyright"
+            android:layout_width="170dp"
+            android:layout_height="63dp"
+            android:layout_marginBottom="30dp"
             android:text=" Copyright © 2020 Yjc "
-            android:layout_gravity="center"
-            app:layout_constraintStart_toStartOf="@id/light_image"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_conversion_absoluteHeight="100dp"
+            tools:layout_conversion_absoluteWidth="196dp" />
 
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -39,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
     ImageButton btnClear;
     @Bind(R.id.btn_show_history)
     Button btnShowHistory;
-
+    @Bind(R.id.btn_github)
+    Button btnGithub;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 按钮监听事件
      */
-    @OnClick({R.id.btn_create_code, R.id.btn_scan_code, R.id.btn_clear,R.id.btn_show_history})
+    @OnClick({R.id.btn_create_code, R.id.btn_scan_code, R.id.btn_clear,R.id.btn_show_history,R.id.btn_github})
     public void clickListener(View view) {
         String key = etCodeKey.getText().toString(); //获取输入的内容，二维码信息
 
@@ -78,11 +80,14 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btn_clear: //文本框清除
                 etCodeKey.setText("");
                 break;
-            case R.id.btn_show_history:
+            case R.id.btn_show_history: //历史记录
                 intent = new Intent(MainActivity.this, HistoryActivity.class);
                 startActivity(intent);
                 break;
-
+            case R.id.btn_github: //源码地址
+                    Uri url = Uri.parse("https://github.com/Veal98/Code-Scanner");
+                    intent = new Intent(Intent.ACTION_VIEW, url);
+                    startActivity(intent);
 
 
 

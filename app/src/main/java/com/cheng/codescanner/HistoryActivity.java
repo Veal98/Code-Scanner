@@ -40,8 +40,9 @@ public class HistoryActivity extends Activity {
     Button btnClearHistory;
 
     private ArrayList<History> historyList;
+    private final int DataBaseVersion =  3;
 
-    DBHelper dbHelper = new DBHelper(HistoryActivity.this,"db_history",null, 3);
+    DBHelper dbHelper = new DBHelper(HistoryActivity.this,"db_history",null, DataBaseVersion);
 
 
     @Override

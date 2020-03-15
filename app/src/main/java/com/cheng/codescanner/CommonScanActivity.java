@@ -82,6 +82,7 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
     TextView qrcode_ic_back;   //取消扫描
 
     private SQLiteDatabase db;
+    private final int DataBaseVersion =  3;
 
     /**
      * 此处监听使用匿名内部类 + ButterKnife
@@ -101,7 +102,7 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
         checkPermission(); //摄像头权限申请
 
         // 创建数据库
-        DBHelper dbHelper = new DBHelper(CommonScanActivity.this, "db_history", null, 3);
+        DBHelper dbHelper = new DBHelper(CommonScanActivity.this, "db_history", null, DataBaseVersion);
         db = dbHelper.getWritableDatabase();
 
         initView();
